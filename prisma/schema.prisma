@@ -1,0 +1,241 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["selectRelationCount"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int             @id @default(autoincrement())
+  name          String?
+  mobile        String?          @unique
+  email         String?          @unique
+  username      String?          @unique
+  password      String?
+  firebaseId    String?         
+  age           Int?         
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  deleted       DateTime?
+  token         String?
+  posts         Post[]
+  profile       Profile?
+  followedBy    Followers[]     @relation("FollowedBy")
+  following     Followers[]     @relation("Following")
+  eventFrom     Events[]        @relation("EventFrom")
+  eventTo       Events[]        @relation("EventTo")
+  inviteFrom    Invitations[]   @relation("InviteFrom")
+  inviteTo      Invitations[]   @relation("InviteTo")
+  clubFollowing ClubFollowers[]
+  likes         Likes[]
+  comments      Comments[]
+  clubMember    ClubMembers[]
+  userHasTags   UserHasTags[]
+  contactList   ContactList[]
+}
+
+model UserHasTags {
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int // relation scalar field (used in the `@relation` attribute above)
+  tag       Tags     @relation(fields: [tagId], references: [id])
+  tagId     Int // relation scalar field (used in the `@relation` attribute above)
+  createdAt DateTime @default(now())
+
+  @@id([userId, tagId])
+}
+
+model Post {
+  id           Int           @id @default(autoincrement())
+  user         User          @relation(fields: [user_id], references: [id])
+  user_id      Int
+  club         Clubs?        @relation(fields: [club_id], references: [id])
+  club_id      Int?
+  description  String?
+  likes        Likes[]
+  comments     Comments[]
+  media        Media?        @relation("Media", fields: [media_id], references: [id])
+  media_id     Int?
+  thumbnail    Media?        @relation("Thumbnail", fields: [thumbnail_id], references: [id])
+  thumbnail_id Int?
+  postHasTags  PostHasTags[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  deleted      DateTime?
+}
+
+model PostHasTags {
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    Int // relation scalar field (used in the `@relation` attribute above)
+  tag       Tags     @relation(fields: [tagId], references: [id])
+  tagId     Int // relation scalar field (used in the `@relation` attribute above)
+  createdAt DateTime @default(now())
+
+  @@id([postId, tagId])
+}
+
+model Profile {
+  id          Int     @id @default(autoincrement())
+  description String?
+  user        User?   @relation(fields: [user_id], references: [id])
+  user_id     Int?
+  media       Media?  @relation(fields: [media_id], references: [id])
+  media_id    Int?
+}
+
+model Media {
+  id        Int       @id @default(autoincrement())
+  name      String
+  key       String    @unique
+  url       String    @unique
+  posts     Post[]    @relation("Media")
+  thumbnail Post[]    @relation("Thumbnail")
+  Profile   Profile[]
+  Club      Clubs[]
+}
+
+model Likes {
+  id        Int       @id @default(autoincrement())
+  user      User      @relation(fields: [user_id], references: [id])
+  user_id   Int
+  post      Post      @relation(fields: [post_id], references: [id])
+  post_id   Int
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deleted   DateTime?
+}
+
+model Comments {
+  id        Int       @id @default(autoincrement())
+  content   String
+  user      User      @relation(fields: [user_id], references: [id])
+  user_id   Int
+  post      Post      @relation(fields: [post_id], references: [id])
+  post_id   Int
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deleted   DateTime?
+}
+
+model Followers {
+  id           Int       @id @default(autoincrement())
+  following    User      @relation("Following", fields: [followingId], references: [id])
+  followingId  Int
+  followedBy   User      @relation("FollowedBy", fields: [followedById], references: [id])
+  followedById Int
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  deleted      DateTime?
+}
+
+model ClubFollowers {
+  id           Int       @id @default(autoincrement())
+  following    Clubs     @relation(fields: [followingId], references: [id])
+  followingId  Int
+  followedBy   User      @relation(fields: [followedById], references: [id])
+  followedById Int
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  deleted      DateTime?
+}
+
+model Clubs {
+  id               Int             @id @default(autoincrement())
+  name             String
+  description      String
+  media            Media           @relation(fields: [media_id], references: [id])
+  media_id         Int
+  clubHasTags      ClubHasTags[]
+  clubMembers      ClubMembers[]
+  clubHasFollowers ClubFollowers[]
+  posts            Post[]
+  isPrivate        Boolean         @default(false)
+  isClosed         Boolean         @default(false)
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  deleted          DateTime?
+}
+
+model ClubHasTags {
+  club      Clubs    @relation(fields: [clubId], references: [id])
+  clubId    Int // relation scalar field (used in the `@relation` attribute above)
+  tag       Tags     @relation(fields: [tagId], references: [id])
+  tagId     Int // relation scalar field (used in the `@relation` attribute above)
+  createdAt DateTime @default(now())
+
+  @@id([clubId, tagId])
+}
+
+model ClubMembers {
+  id          Int       @id @default(autoincrement())
+  description String?
+  user        User      @relation(fields: [user_id], references: [id])
+  user_id     Int
+  club        Clubs     @relation(fields: [club_id], references: [id])
+  club_id     Int
+  isAdmin     Boolean
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deleted     DateTime?
+}
+
+model Tags {
+  id          Int           @id @default(autoincrement())
+  name        String
+  description String?
+  verified    Boolean
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  deleted     DateTime?
+  userHasTags UserHasTags[]
+  postHasTags PostHasTags[]
+  clubHasTags ClubHasTags[]
+}
+
+model Events {
+  id          Int        @id @default(autoincrement())
+  name        String
+  from        User       @relation("EventFrom", fields: [eventFromId], references: [id])
+  eventFromId Int
+  to          User       @relation("EventTo", fields: [eventToId], references: [id])
+  eventToId   Int
+  event       EventTypes @relation(fields: [event_id], references: [id])
+  event_id    Int
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  deleted     DateTime?
+}
+
+model EventTypes {
+  id        Int       @id @default(autoincrement())
+  eventName String    @unique
+  events    Events[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deleted   DateTime?
+}
+
+model Invitations {
+  id           Int       @id @default(autoincrement())
+  name         String
+  from         User?     @relation("InviteFrom", fields: [inviteFromId], references: [id])
+  inviteFromId Int
+  to           User?     @relation("InviteTo", fields: [inviteToId], references: [id])
+  inviteToId   Int
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  deleted      DateTime?
+}
+
+model ContactList {
+  id           Int       @id @default(autoincrement())
+  user         User      @relation(fields: [user_id], references: [id])
+  user_id      Int
+  name         String
+  mobile       String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  deleted      DateTime?
+}

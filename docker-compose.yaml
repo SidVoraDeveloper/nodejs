@@ -1,0 +1,16 @@
+version: "3.9"
+    
+services:
+  db:
+    image: mysql:5.7
+    volumes:
+      - database:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: hiki
+      MYSQL_DATABASE: hiki
+      MYSQL_USER: hiki
+      MYSQL_PASSWORD: local-password
+    
+volumes:
+  database: {}

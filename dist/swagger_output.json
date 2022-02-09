@@ -1,0 +1,155 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "REST API",
+        "description": ""
+    },
+    "host": "localhost:3000",
+    "basePath": "/",
+    "tags": [],
+    "schemes": [
+        "http"
+    ],
+    "consumes": [],
+    "produces": [],
+    "paths": {
+        "false": {
+            "get": {
+                "tags": [],
+                "description": "",
+                "parameters": [],
+                "responses": {}
+            }
+        },
+        "/auth/signup": {
+            "post": {
+                "tags": [],
+                "description": "",
+                "parameters": [],
+                "responses": {}
+            }
+        },
+        "/auth/createclub": {
+            "post": {
+                "tags": [],
+                "description": "",
+                "parameters": [],
+                "responses": {}
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "tags": [],
+                "description": "",
+                "parameters": [],
+                "responses": {}
+            }
+        },
+        "/auth/user": {
+            "get": {
+                "tags": [],
+                "description": "",
+                "parameters": [],
+                "responses": {}
+            }
+        },
+        "/api/posts": {
+            "get": {
+                "tags": [],
+                "description": "",
+                "parameters": [],
+                "responses": {}
+            }
+        },
+        "/api/post": {
+            "post": {
+                "tags": [],
+                "description": "",
+                "parameters": [],
+                "responses": {}
+            }
+        },
+        "/api/profile": {
+            "get": {
+                "tags": [],
+                "description": "",
+                "parameters": [],
+                "responses": {}
+            }
+        },
+        "/api/userposts": {
+            "get": {
+                "tags": [],
+                "description": "",
+                "parameters": [],
+                "responses": {}
+            }
+        },
+        "/api/getusers": {
+            "get": {
+                "tags": [],
+                "description": "",
+                "parameters": [],
+                "responses": {}
+            }
+        },
+        "/api/userclubs": {
+            "get": {
+                "tags": [],
+                "description": "",
+                "parameters": [],
+                "responses": {}
+            }
+        },
+        "/api/sports": {
+            "get": {
+                "tags": [],
+                "description": "",
+                "parameters": [],
+                "responses": {}
+            }
+        },
+        "/api/like": {
+            "post": {
+                "tags": [],
+                "description": "",
+                "parameters": [],
+                "responses": {}
+            }
+        },
+        "/api/unlike": {
+            "post": {
+                "tags": [],
+                "description": "",
+                "parameters": [],
+                "responses": {}
+            }
+        },
+        "/api/follow": {
+            "post": {
+                "tags": [],
+                "description": "",
+                "parameters": [],
+                "responses": {}
+            }
+        },
+        "/explore/users": {
+            "get": {
+                "tags": [],
+                "description": "",
+                "parameters": [],
+                "responses": {}
+            }
+        },
+        "/explore/clubs": {
+            "get": {
+                "tags": [],
+                "description": "",
+                "parameters": [],
+                "responses": {}
+            }
+        }
+    },
+    "definitions": {}
+}
